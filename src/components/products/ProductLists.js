@@ -5,11 +5,12 @@ export const ProductList = () => {
 
     const [products, setProducts] = useState([])
     const [productTypes, setProductTypes] = useState([])
-    const [category, updateProductType] = useState([])
+   
 
     useEffect(
         () => {
-            fetch("http://localhost:8088/products")
+            
+            fetch("http://localhost:8088/products?_expand=productType&_sort=productTypeId")
                 .then(res => res.json())
                 .then((productArray) => {
                     setProducts(productArray)
@@ -32,18 +33,7 @@ export const ProductList = () => {
         []
     )
 
-    useEffect(
-        () => {
-
-            const categoryList = productTypes.map(productType => productType)
-
-
-
-            updateProductType(categoryList)
-
-
-
-        }, [])
+  
 
 
     return (
@@ -55,17 +45,17 @@ export const ProductList = () => {
                 products.map(
                     (productObject) => {
 
-                        let productCategory
+                        // let productCategory
 
-                        for (const productType of productTypes) {
-                            if (productObject.productTypeId === productType.id) {
-                                productCategory = productType.category
+                        // for (const productType of productTypes) {
+                        //     if (productObject.productTypeId === productType.id) {
+                        //         productCategory = productType.category
 
 
-                            }
-                        }
+                        //     }
+                        // }
                         return <p key={`product--${productObject.id}`}>product name: {productObject.name}<br></br>
-                            price: {productObject.price}<br></br>  category:{productCategory} </p>
+                            price: {productObject.price}<br></br>  category:{productObject.productType.category} </p>
                     })
             }
         </>
